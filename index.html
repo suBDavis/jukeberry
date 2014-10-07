@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JukeBerry</title>
+
+    <!-- Bootstrap -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!--jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#yt').click(function(){
+          var search = $("#query").val();
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "yt=true&search="+search,
+             success: function(msg){
+             document.getElementById('reply').innerHTML = msg;
+             callBack();
+             }
+          });
+          function callBack() {
+            $.ajax({
+                type: "GET",
+                url: "ajaxsubmit.php",
+                data: "playlist=true",
+                success: function(msg){
+                document.getElementById('playlist').innerHTML = "<pre>"+msg+"</pre>";
+                }
+              });
+          }
+        });
+        $('#gs').click(function(){
+          var search = $("#query").val();
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "gs=true&search="+search,
+             success: function(msg){
+             document.getElementById('reply').innerHTML = msg;
+             document.getElementById('gsSelect').style.display = 'block';
+             }
+          });
+        });
+        $('#playnum').click(function(){
+          var search = $("#query").val();
+          var num = $("#playnum").val();
+          alert(num);
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "gs=true&search="+search,
+             success: function(msg){
+             document.getElementById('reply').innerHTML = msg;
+             }
+          });
+        });
+        $('#bt').click(function(){
+          alert("Currently Unavailable");
+        });
+        $('#playlistb').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "playlist=true",
+             success: function(msg){
+             document.getElementById('playlist').innerHTML = "<pre>"+msg+"</pre>";
+             }
+          });
+        });
+        $('#vol1').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "volume=1",
+             success: function(msg){
+            }
+          });
+        });
+        $('#vol0').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "volume=0",
+             success: function(msg){
+            }
+          });
+        });
+        $('#playpause').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "playpause=1",
+             success: function(msg){
+            }
+          });
+        });
+        $('#playpause2').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "playpause=1",
+             success: function(msg){
+            }
+          });
+        });
+        $('#skip').click(function(){
+          $.ajax({
+             type: "GET",
+             url: "ajaxsubmit.php",
+             data: "skip=1",
+             success: function(msg){
+            }
+          });
+        });
+        $.ajax({
+            type: "GET",
+            url: "ajaxsubmit.php",
+            data: "playlist=true",
+            success: function(msg){
+            document.getElementById('playlist').innerHTML = "<pre>"+msg+"</pre>";
+            }
+          });
+    });
+    function addSong(x) {
+      var search = $("#query").val();
+      $.ajax({
+          type: "GET",
+          url: "ajaxsubmit.php",
+          data: "search="+search+"&playnum="+x,
+          success: function(msg){
+            callBack();
+          }
+        });
+      function callBack() {
+        $.ajax({
+            type: "GET",
+            url: "ajaxsubmit.php",
+            data: "playlist=true",
+            success: function(msg){
+            document.getElementById('playlist').innerHTML = "<pre>"+msg+"</pre>";
+            }
+          });
+      }
+    };
+    </script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <center>
+              <h1>JukeBerry</h1>
+              <h2><small>Managed Grooveshark and YouTube Player</small></h2>
+                <button id="playpause" type="button" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-play"></span> Play
+                </button>
+                <button id="playpause2" type="button" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-pause"></span> Pause
+                </button>
+                <button id="skip" type="button" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-step-forward"></span> Skip
+                </button>
+                <button id="vol1" type="button" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-volume-up"></span> Volume +
+                </button>
+                <button id="vol0" type="button" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-volume-down"></span> Volume -
+                </button>
+            </center>
+            <br><br>
+              <form role="form">
+                <p><input type="text" class="form-control" id="query" placeholder="Enter GrooveShark search or YouTube ID"/>
+                <p><input type="button" value="YouTube ID" id="yt" class="btn btn-danger"/>
+                   <input type="button" value="Grooveshark Search" id="gs" class="btn btn-warning"/>
+                   <input type="button" value="Bluetooth Toggle" id="bt" class="btn btn-primary"/></p>
+              </form>
+            <h2>Playlist</h2>
+            <div id="playlist">
+            </div>
+            <h2>Query Results</h2>
+            <div id="gsSelect" style="display:none">
+              <p>
+                <button onclick="addSong(1)" class="btn btn-info">1</button>
+                <button onclick="addSong(2)" class="btn btn-info">2</button>
+                <button onclick="addSong(3)" class="btn btn-info">3</button>
+                <button onclick="addSong(4)" class="btn btn-info">4</button>
+                <button onclick="addSong(5)" class="btn btn-info">5</button>
+                <button onclick="addSong(6)" class="btn btn-info">6</button>
+                <button onclick="addSong(7)" class="btn btn-info">7</button>
+                <button onclick="addSong(8)" class="btn btn-info">8</button>
+                <button onclick="addSong(9)" class="btn btn-info">9</button>
+                <button onclick="addSong(10)" class="btn btn-info">10</button>
+              </p>
+            </div>
+            <div id="reply">
+              <pre>1) Put in some search terms<br>2) Or insert a YouTube video ID</pre>
+            </div>
+        </div>
+      </div>
+      <center><h4><small>Built by @subdavis using Bootstrap and Glyphicons</small></h4>
+    </div>
+  </body>
+</html>
